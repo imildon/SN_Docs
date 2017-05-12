@@ -1,0 +1,20 @@
+//Update the MEDINC table
+//Action Name: medinc_update_incident
+//Condition: gs.hasRole("itil") && current.u_medinc_number != '';
+
+(function(current, previous, gs, action) {
+var rec = new GlideRecord("u_medical_incident");
+rec.addQuery("number", current.u_medinc_number);
+rec.setLimit(1);
+rec.query();
+while(rec.next()){
+rec.comments = current.comments;
+rec.work_notes = current.work_notes.getJournalEntry(-1);
+
+current.state = 6; //resolve INC record
+
+current.update();
+rec.update();
+gs.addInfoMessage("Medical Incident " + rec.number + " updated");
+}
+})(current, previous, gs, action);
