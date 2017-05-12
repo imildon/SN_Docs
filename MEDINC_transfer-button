@@ -1,0 +1,34 @@
+//Transfer to MEDINC table
+//Action Name: medinc_transfer_incident
+//Condition: gs.hasRole("itil") && current.current.u_medinc_number == '';
+
+(function(current, previous, gs, action) {
+var minc = new GlideRecord("u_medical_incident");
+minc.priority = current.priority;
+minc.impact = current.impact;
+minc.urgency = current.urgency;
+minc.caller_id = current.caller_id;
+minc.u_business_unit = current.u_business_unit;
+minc.u_contact_number = current.u_contact_number;
+minc.u_campus2 = current.u_campus2;
+minc.u_building = current.u_building;
+minc.u_room_number = current.u_room_number;
+minc.contact_type = current.contact_type;
+minc.short_description = current.short_description;
+minc.assignment_group = '6f28428f85d824007730c97e6edccd18'; //MI Transfer
+minc.work_notes = current.work_notes.getJournalEntry(-1);
+minc.u_inc_number = current.number;
+minc.u_itil_watch_list = current.assigned_to;
+
+var sysID = minc.insert();
+
+current.state = 22;
+
+current.incident_id = sysID;
+var mySysID = current.update();
+
+gs.addInfoMessage("Medical Incident " + minc.number + " created");
+action.setRedirectURL(minc);
+action.setReturnURL(current);
+
+})(current, previous, gs, action);
