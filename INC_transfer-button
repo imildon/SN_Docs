@@ -1,0 +1,36 @@
+//Transfer to INC table
+//Action Name: inc_transfer_incident
+//Condition: gs.hasRole("itil")
+
+(function(current, previous, gs, action) {
+var inc = new GlideRecord("incident");
+inc.priority = current.priority;
+inc.impact = current.impact;
+inc.urgency = current.urgency;
+inc.u_responding_department = 'Information Technology';
+inc.contact_type = current.contact_type;
+inc.caller_id = current.u_caller_id;
+inc.u_business_unit = current.u_business_unit;
+inc.u_contact_number = current.u_contact_number;
+inc.u_campus2 = current.u_campus2;
+inc.u_building = current.u_building;
+inc.u_room_number = current.u_room_number;
+inc.short_description = current.short_description;
+inc.assignment_group = 'd056d017ffac5c407730f6ce2a649d9e';
+inc.work_notes = current.work_notes;
+inc.u_medinc_number = current.number;
+inc.work_notes = current.work_notes.getJournalEntry(-1);
+inc.u_itil_watch_list = current.assigned_to;
+
+var sysID = inc.insert();
+
+current.state = 22;
+
+current.incident_id = sysID;
+var mySysID = current.update();
+
+gs.addInfoMessage("Incident " + inc.number + " created");
+action.setRedirectURL(inc);
+action.setReturnURL(current);
+
+})(current, previous, gs, action);
