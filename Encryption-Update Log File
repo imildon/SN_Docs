@@ -8,11 +8,11 @@ setEncryptionContext(current.encryption_context);//new line of script
 writeEncryptionHistory('Write','Field',current.sys_id, gs.getUserID());
 //gs.log("**** Encrypted Field edited on " + current.number + ' with ' + eRules.encryption_context.name + ' by ' + gs.getUserName() + '.');
 
+
 //Do not use below section!
 //original version = BAD
 //var newHistory = gs.nowDateTime() + ' ' + gs.getUserName() + '\n' + current.encrypted_data.getDisplayValue() + '\n\n' + current.encrypted_data_log.getDisplayValue();
 //current.encrypted_data_log.setDisplayValue(newHistory);
-
 //Write Encryption History Entry
 //writeEncryptionHistory('Write','Field',current.sys_id, gs.getUserID());
 //gs.log("**** Encrypted Field edited on " + current.number + ' with ' + eRules.encryption_context.name + ' by ' + gs.getUserName() + '.');
