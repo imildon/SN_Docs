@@ -1,0 +1,15 @@
+//Business Rule to set Assginment Group members to ITIL Watch List
+//Table: Medical Incident
+//When: after
+//Insert and Update
+
+//*Use in conjuction with script line in Transfer to INC table UI Action*
+
+var gr = new GlideRecord('sys_user_grmember');  
+gr.addQuery('group', current.assignment_group);  
+gr.query();  
+while(gr.next())  
+{  
+  current.u_itil_watch_list += ',' + gr.user.sys_id;  
+  current.update(); //skip this line if you are using before Business rule  
+} 
