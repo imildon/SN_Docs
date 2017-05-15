@@ -1,7 +1,3 @@
-//Transfer to INC table
-//Action Name: inc_transfer_incident
-//Condition: gs.hasRole("itil")
-
 (function(current, previous, gs, action) {
 var inc = new GlideRecord("incident");
 inc.priority = current.priority;
@@ -20,17 +16,18 @@ inc.assignment_group = 'd056d017ffac5c407730f6ce2a649d9e';
 inc.work_notes = current.work_notes;
 inc.u_medinc_number = current.number;
 inc.work_notes = current.work_notes.getJournalEntry(-1);
-inc.u_itil_watch_list = current.assigned_to;
-
+//inc.u_itil_watch_list = current.assigned_to;
+inc.u_itil_watch_list += ',' + current.u_itil_watch_list; //in conjuction with Business Rule to add MEDINC Assignment Group 
+                                                          //to INC ITIL Watch List
 var sysID = inc.insert();
 
-current.state = 22;
+current.state = 26;
 
 current.incident_id = sysID;
 var mySysID = current.update();
 
 gs.addInfoMessage("Incident " + inc.number + " created");
+current.state = 26;
 action.setRedirectURL(inc);
 action.setReturnURL(current);
-
 })(current, previous, gs, action);
