@@ -1,0 +1,87 @@
+MAC Address Validation
+Needed items:
+1. Script include (on demand) to create function
+2. Business Rule (per field to validate)
+3. UI Policy to show hide the field depending on choice field (Desktop/Laptop)
+
+Script Include
+Name: validateMacAddress
+Accessible from: All application scopes
+Description: On demand script to validate Mac Address syntax
+Script:
+function validateMacAddress(macStr){
+		// Use JavaScript coercion to guarantee macStr is a string
+		macStr = macStr + '';
+		// Compare macStr against the allowed syntax as specified in the regular expression
+		// If macStr has allowed syntax, return true, else return false
+		if(macStr.match(/^(([0-9-A-Z]{2})\:([0-9-A-Z]{2})\:([0-9-A-Z]{2})\:([0-9-A-Z]{2})\:([0-9-A-Z]{2})\:([0-9-A-Z]{2}))$/)){
+			return true;
+		}
+		else {
+		 return false;
+		}
+	}
+
+
+/////
+
+
+Business Rule(s)
+Name: Mac Address Syntax Validate
+When: Before
+Insert
+Update
+Condition: current.mac_address.active
+Script:
+(function executeRule(current, previous /*null when async*/) {
+
+	// Add your code here
+	// Pass the Requested for MAC to the Script Include.  Store the return
+		// value from the Script Include in the isMac variable
+		var isMac = validateMacAddress(current.mac_address);
+		// If isMac is false (mac address syntax is not valid) do not save
+		// the record.  Write an error message to the screen.
+		if(isMac == false){
+			gs.addErrorMessage(current.mac_address  + " Is not a valid MAC address. It should be twelve characters total (number, uppercase letter or combination) separated by : every two characters.");
+			current.setAbortAction(true);
+		}
+})(current, previous);
+
+
+Name: WLAN Mac Address Syntax Validate
+When: Before
+Insert
+Update
+Condition: current.u_wlan_address.active
+Script:
+(function executeRule(current, previous /*null when async*/) {
+
+	// Add your code here
+	// Pass the Requested for MAC to the Script Include.  Store the return
+		// value from the Script Include in the isMac variable
+		var isMac = validateMacAddress(current.mac_address);
+		// If isMac is false (mac address syntax is not valid) do not save
+		// the record.  Write an error message to the screen.
+		if(isMac == false){
+			gs.addErrorMessage(current.u_wlan_address  + " Is not a valid MAC address. It should be twelve characters total (number, uppercase letter or combination) separated by : every two characters.");
+			current.setAbortAction(true);
+		}
+})(current, previous);
+
+
+/////
+
+
+UI Policy
+Is laptop
+Table: Computer
+Condition: Desktop or Laptop is Laptop
+Actions:
+u_wlan_address = Mandatory is True, Visible is True
+
+
+Is desktop
+Table: Computer
+Condition: Desktop or Laptop is Desktop
+Actions:
+mac_address = Mandatory is True, Visible is True
