@@ -1,0 +1,10 @@
+//Set Status Change Date
+//before Business Rule on Computer[cmdb_ci_computer]
+//insert and update
+//Filter Condition: Status(u_status) changes
+
+(function executeRule(current, previous /*null when async*/) {
+
+	// Add your code here
+	current.u_status_change_date = gs.nowDateTime();
+})(current, previous);
