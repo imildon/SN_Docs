@@ -1,0 +1,9 @@
+//rather than using a template to set the Enc. Context, use this script example
+//to only set encryption if a "specified" field (or fields) contain data
+
+function onSubmit() {
+   var enc = g_form.getValue ('<field name>');
+   if(enc !=""){
+	    GlideSession.get().getEncryptionContext().setCurrent(<encryption context sysID>);
+      }
+}
