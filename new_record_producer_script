@@ -1,0 +1,22 @@
+//this script will handle all combinations
+if(producer.test_one != "") {
+	current.to_be_encrypted = 'From ESS Form: ' + producer.test_one; //pass data for encryption
+}
+if(producer.dea_number != "") {
+  current.to_be_encrypted = 'DEA Number: ' + producer.dea_number;
+}
+if(producer.npi_number != "") {
+  current.to_be_encrypted = 'NPI Number: ' + producer.npi_number;
+}
+if(producer.test_one != "" && producer.dea_number != "") {
+  current.to_be_encrypted = 'From ESS Form: ' + producer.test_one + '\n' + 'DEA Number: ' + producer.dea_number;
+}
+if(producer.test_one != "" && producer.npi_number != "") {
+  current.to_be_encrypted = 'From ESS Form: ' + producer.test_one + '\n' + 'NPI Number: ' + producer.npi_number;
+}
+if(producer.dea_number != "" && producer.npi_number != "") {
+  current.to_be_encrypted = 'DEA Number: ' + producer.dea_number + '\n' + 'NPI Number: ' + producer.npi_number;
+}
+if(producer.test_one != "" && producer.dea_number != "" && producer.npi_number != "") {
+  current.to_be_encrypted = 'From ESS Form: ' + producer.test_one + '\n' + 'DEA Number: ' + producer.dea_number + '\n' + 'NPI Number: ' + producer.npi_number;
+}
