@@ -1,3 +1,4 @@
+//no longer works on Geneva!
 //rather than using a template to set the Enc. Context, use this script example
 //to only set encryption if a "specified" field (or fields) contain data
 
