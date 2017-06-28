@@ -1,3 +1,4 @@
+//problem with this is it will always trigger encryption!
 current.to_be_encrypted = producer.To_Be_Encrypted; //pass data for encryptio
 
 current.to_be_encrypted = 'NPI Number: ' + producer.npi_num + '\n' + 'Care Team: ' + producer.care_team; //pass data for encryption
