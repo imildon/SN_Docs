@@ -20,3 +20,6 @@ if(producer.dea_number != "" && producer.npi_number != "") {
 if(producer.test_one != "" && producer.dea_number != "" && producer.npi_number != "") {
   current.to_be_encrypted = 'From ESS Form: ' + producer.test_one + '\n' + 'DEA Number: ' + producer.dea_number + '\n' + 'NPI Number: ' + producer.npi_number;
 }
+if(producer.test_one == "" && producer.dea_number == "" && producer.npi_number == "") {
+  current.to_be_encrypted = "";
+}
