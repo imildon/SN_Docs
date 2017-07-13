@@ -1,0 +1,22 @@
+//business rule on MEDINC
+//when: after update
+//condition: gs.hasRole("itil") && current.u_inc_number != '' && current.state == 6
+
+(function(current, previous, gs, action) {
+var rec = new GlideRecord("incident");
+rec.addQuery("number", current.u_inc_number);
+rec.setLimit(1);
+rec.query();
+while(rec.next()){
+rec.comments = current.comments;
+rec.work_notes = current.work_notes.getJournalEntry(-1);
+rec.close_code = current.u_close_code;
+rec.close_notes = ("Incident " + rec.number + " resolved due to Medical Incident " + current.number + " being resolved");
+	
+rec.state = 6; //resolve originating INC record
+
+current.update();
+rec.update();
+gs.addInfoMessage("Incident " + rec.number + " resolved due to the MEDINC record being resolved");
+}
+})(current, previous, gs, action);
