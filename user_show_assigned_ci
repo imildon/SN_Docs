@@ -1,0 +1,76 @@
+//UI Macro to provide a popup of related (assigned to) CI's
+//set this in the field atttributes box: user_show_assigned_ci
+
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+<j:set var="jvar_n" value="user_show_assigned_ci_${ref}"/>
+   <g2:evaluate var="jvar_show_cis_display" jelly="true">
+      var id = __ref__.getSysIdValue();
+      if (id == null)
+         "none";
+      else {
+         var ga = new GlideAggregate('cmdb_ci');
+         ga.addQuery('assigned_to', __ref__.getSysIdValue());
+         ga.addAggregate("COUNT");
+         ga.query();
+         var total = 0;
+         if (ga.next())
+            total = ga.getAggregate("COUNT");
+         if (total == 0)
+            "none";
+         else
+            "";
+      }
+   </g2:evaluate>
+
+   <a id="${jvar_n}" 
+     onclick="showCIDialog('${ref}')"
+     name="${jvar_n}" 
+     style="display:$[jvar_show_cis_display]"
+     title="${gs.getMessage('Show related configuration items')}">
+     <img border="0" src="images/icons/cmbd_ci.gifx" />
+   </a>
+
+<script>
+needsRefresh = false;
+function onChange_caller_id_show_cis(element, original, changed, loading) {
+   if (needsRefresh == false) {
+      needsRefresh = true;
+      return;
+   }
+   if (changed.length == 0) {
+      $('${jvar_n}').hide();
+      return;
+   }
+   var ga = new GlideAjax('ShowCallerCIsAjax');
+   ga.addParam('sysparm_name', 'getAssignedCICount');
+   ga.addParam('sysparm_user', g_form.getValue('${ref}'));
+   ga.getXML(assignedCIReturn);
+}
+
+function assignedCIReturn(response) {
+   var answer = parseInt(response.responseXML.documentElement.getAttribute("answer"));
+   var e = $('${jvar_n}');
+   if (answer > 0)
+      e.show();
+   else
+      e.hide();
+}
+
+var h = new GlideEventHandler('onChange_incident_cmdb_ci_show_related', onChange_caller_id_show_cis, '${ref}');
+g_event_handlers.push(h);
+
+function showCIDialog(reference){
+   var s = reference.split('.');
+   var referenceField = s[1];
+   var v = g_form.getValue(referenceField);
+   var w = new GlideDialogWindow('show_list');
+   w.setTitle("Caller's Configuration Item");
+   w.setPreference('table', 'cmdb_ci_list');
+   w.setPreference('sysparm_view', 'asset');
+   w.setPreference('sysparm_query', "assigned_to=" + v);
+   w.render();
+}
+
+</script>
+</j:jelly>
