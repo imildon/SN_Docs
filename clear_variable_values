@@ -4,7 +4,7 @@
 //Table: Medical Incident
 //Condition: current.variable_pool.<variable name> !="" || current.variable_pool.<variable name> !=""
 
-(function executeRule(current, previous /*null when async*) {
+(function executeRule(current, previous /*null when async*/) {
 
   //Add each variable here and match it to the condition line
   current.variable_pool.<variable name> = "";
